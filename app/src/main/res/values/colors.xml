@@ -14,4 +14,9 @@
     <color name="background">@android:color/background_dark</color>
     <color name="primary">@android:color/holo_blue_dark</color>
     <color name="accent">@android:color/holo_blue_light</color>
+    <!-- TV specific colors -->
+    <color name="focused_background">#3F51B5</color>
+    <color name="focused_border">#4CAF50</color>
+    <color name="unfocused_background">#424242</color>
+
 </resources>
