@@ -6,8 +6,6 @@ workflows:
       android_signing:
         - keystore_reference
       java: 17
-      groups:
-        - google_play
       vars:
         PACKAGE_NAME: "io.nekohasekai.sfa"
     scripts:
@@ -48,10 +46,6 @@ workflows:
         notify:
           success: true
           failure: true
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: beta
-        submit_as_draft: true
 
   android-tv-workflow:
     name: Android TV Build
@@ -60,7 +54,6 @@ workflows:
       android_signing:
         - keystore_reference
       java: 17
-      android_sdk: 35
       vars:
         PACKAGE_NAME: "io.nekohasekai.sfa"
     scripts:
@@ -90,7 +83,3 @@ workflows:
         notify:
           success: true
           failure: true
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: beta
-        submit_as_draft: true 
