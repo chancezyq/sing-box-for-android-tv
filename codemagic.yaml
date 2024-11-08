@@ -6,7 +6,6 @@ workflows:
       android_signing:
         - keystore_reference
       java: 17
-      android_sdk: 35
       groups:
         - google_play
       vars:
@@ -16,6 +15,12 @@ workflows:
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
           echo "ndk.dir=$ANDROID_NDK_HOME" >> "$CM_BUILD_DIR/local.properties"
+      
+      - name: Install Android SDK
+        script: |
+          sdkmanager "platforms;android-35"
+          sdkmanager "build-tools;35.0.0"
+          sdkmanager "ndk;27.2.12479018"
       
       - name: Set up keystore properties
         script: |
