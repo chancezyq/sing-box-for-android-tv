@@ -11,4 +11,7 @@
     <color name="log_red_light">#e91e63</color>
     <color name="log_blue_light">#00a6b2</color>
     <color name="log_white">#ececec</color>
+    <color name="background">@android:color/background_dark</color>
+    <color name="primary">@android:color/holo_blue_dark</color>
+    <color name="accent">@android:color/holo_blue_light</color>
 </resources>

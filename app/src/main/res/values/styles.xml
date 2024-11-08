@@ -1,0 +1,13 @@
+<resources>
+    <style name="TextAppearance.Leanback" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Theme.Leanback" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textAppearance">@style/TextAppearance.Leanback</item>
+    </style>
+</resources> 
