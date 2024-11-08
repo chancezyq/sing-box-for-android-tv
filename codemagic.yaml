@@ -35,7 +35,7 @@ workflows:
 
       - name: Build Android TV release
         script: |
-          ./gradlew assembleOtherDebug
+          ./gradlew assembleOtherDebug --stacktrace --info
     
     artifacts:
       - app/build/outputs/apk/play/debug/*.apk
@@ -81,7 +81,7 @@ workflows:
       
       - name: Build Android TV release
         script: |
-          ./gradlew assembleOtherDebug
+          ./gradlew assembleOtherDebug --stacktrace --info
     
     artifacts:
       - app/build/outputs/apk/other/debug/*.apk

@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.leanback.widget.BrowseFrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.leanback.widget.VerticalGridView
-        android:id="@+id/navigation_menu"
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
-        android:background="?android:colorBackground"
-        android:paddingTop="@dimen/lb_browse_header_height"/>
-
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <androidx.leanback.widget.BrowseFrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="280dp"/>
+        android:layout_height="match_parent">
 
-</androidx.leanback.widget.BrowseFrameLayout> 
+        <androidx.leanback.widget.VerticalGridView
+            android:id="@+id/navigation_menu"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:background="?android:colorBackground"
+            android:paddingTop="@dimen/lb_browse_header_height"/>
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="280dp"/>
+
+    </androidx.leanback.widget.BrowseFrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout> 
