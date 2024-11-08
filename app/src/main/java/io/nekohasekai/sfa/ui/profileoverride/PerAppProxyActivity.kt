@@ -18,6 +18,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -85,6 +86,18 @@ class PerAppProxyActivity : AbstractActivity<ActivityPerAppProxyBinding>() {
         super.onCreate(savedInstanceState)
 
         setTitle(R.string.title_per_app_proxy)
+
+        val isTV = packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+        
+        if (isTV) {
+            // Use larger item layout for TV
+            binding.appList.apply {
+                adapter = TVAppSelectionAdapter(this@PerAppProxyActivity)
+                layoutManager = GridLayoutManager(this@PerAppProxyActivity, 3)
+            }
+        } else {
+            // Existing mobile setup
+        }
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
@@ -769,4 +782,18 @@ class PerAppProxyActivity : AbstractActivity<ActivityPerAppProxyBinding>() {
         }
     }
 
+}
+
+class TVAppSelectionAdapter(
+    private val context: Context
+) : RecyclerView.Adapter<TVAppViewHolder>() {
+    
+    override fun onBindViewHolder(holder: TVAppViewHolder, position: Int) {
+        holder.itemView.apply {
+            nextFocusUp = if (position < 3) NO_ID else NO_ID
+            nextFocusDown = if (position >= itemCount - 3) NO_ID else NO_ID
+            nextFocusLeft = if (position % 3 == 0) R.id.navigation_menu else NO_ID
+            nextFocusRight = if (position % 3 == 2) NO_ID else NO_ID
+        }
+    }
 }

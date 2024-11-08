@@ -19,4 +19,14 @@
     <style name="BottomSheetDialogTheme" parent="Theme.Material3.DayNight.BottomSheetDialog">
         <item name="android:navigationBarColor">?attr/colorSurfaceContainerLow</item>
     </style>
+
+    <style name="AppTheme.TV" parent="Theme.Leanback">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:itemTextAppearance">@style/TextAppearance.Leanback</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
 </resources>

@@ -72,8 +72,22 @@ class MainActivity : AbstractActivity<ActivityMainBinding>(),
 
     val serviceStatus = MutableLiveData(Status.Stopped)
 
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+    private var isTelevision = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Check if running on TV
+        isTelevision = packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+        
+        if (isTelevision) {
+            setTheme(R.style.AppTheme_TV)
+            setupTVLayout()
+        } else {
+            setupMobileLayout()
+        }
 
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_my) as NavHostFragment
@@ -95,6 +109,40 @@ class MainActivity : AbstractActivity<ActivityMainBinding>(),
         startIntegration()
 
         onNewIntent(intent)
+    }
+
+    private fun setupTVLayout() {
+        setContentView(R.layout.activity_main)
+        
+        val navigationMenu = findViewById<VerticalGridView>(R.id.navigation_menu)
+        val navigationAdapter = TVNavigationAdapter(
+            listOf(
+                NavItem(R.id.navigation_dashboard, R.drawable.ic_dashboard, getString(R.string.title_dashboard)),
+                NavItem(R.id.navigation_log, R.drawable.ic_message_24, getString(R.string.title_log)),
+                NavItem(R.id.navigation_configuration, R.drawable.ic_insert_drive_file_24, getString(R.string.title_configuration)),
+                NavItem(R.id.navigation_settings, R.drawable.ic_settings_24, getString(R.string.title_settings))
+            )
+        ) { navId -> 
+            navigateToDestination(navId)
+        }
+        navigationMenu.adapter = navigationAdapter
+    }
+
+    private fun setupMobileLayout() {
+        setContentView(R.layout.activity_main)
+        
+        val navigationMenu = findViewById<VerticalGridView>(R.id.navigation_menu)
+        val navigationAdapter = TVNavigationAdapter(
+            listOf(
+                NavItem(R.id.navigation_dashboard, R.drawable.ic_dashboard, getString(R.string.title_dashboard)),
+                NavItem(R.id.navigation_log, R.drawable.ic_message_24, getString(R.string.title_log)),
+                NavItem(R.id.navigation_configuration, R.drawable.ic_insert_drive_file_24, getString(R.string.title_configuration)),
+                NavItem(R.id.navigation_settings, R.drawable.ic_settings_24, getString(R.string.title_settings))
+            )
+        ) { navId -> 
+            navigateToDestination(navId)
+        }
+        navigationMenu.adapter = navigationAdapter
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -444,6 +492,28 @@ class MainActivity : AbstractActivity<ActivityMainBinding>(),
     override fun onDestroy() {
         connection.disconnect()
         super.onDestroy()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (isTelevision) {
+            when (keyCode) {
+                KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
+                    // Handle selection
+                    return true
+                }
+                KeyEvent.KEYCODE_BACK -> {
+                    if (handleBackPress()) {
+                        return true
+                    }
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    private fun handleBackPress(): Boolean {
+        // Handle back navigation logic
+        return false
     }
 
 }

@@ -1,0 +1,91 @@
+workflows:
+  android-workflow:
+    name: Android Build
+    max_build_duration: 60
+    environment:
+      android_signing:
+        - keystore_reference
+      java: 17
+      android_sdk: 35
+      groups:
+        - google_play
+      vars:
+        PACKAGE_NAME: "io.nekohasekai.sfa"
+    scripts:
+      - name: Set up local properties
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+          echo "ndk.dir=$ANDROID_NDK_HOME" >> "$CM_BUILD_DIR/local.properties"
+      
+      - name: Set up keystore properties
+        script: |
+          echo "KEYSTORE_PASS=$CM_KEYSTORE_PASSWORD" > keystore.properties
+          echo "ALIAS_NAME=$CM_KEY_ALIAS" >> keystore.properties
+          echo "ALIAS_PASS=$CM_KEY_PASSWORD" >> keystore.properties
+      
+      - name: Build Android release
+        script: |
+          ./gradlew assembleRelease
+
+      - name: Build Android TV release
+        script: |
+          ./gradlew assembleOtherRelease
+    
+    artifacts:
+      - app/build/outputs/apk/play/release/*.apk
+      - app/build/outputs/apk/other/release/*.apk
+      - app/build/outputs/mapping/release/mapping.txt
+
+    publishing:
+      email:
+        recipients:
+          - user@example.com
+        notify:
+          success: true
+          failure: true
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: beta
+        submit_as_draft: true
+
+  android-tv-workflow:
+    name: Android TV Build
+    max_build_duration: 60
+    environment:
+      android_signing:
+        - keystore_reference
+      java: 17
+      android_sdk: 35
+      vars:
+        PACKAGE_NAME: "io.nekohasekai.sfa"
+    scripts:
+      - name: Set up local properties
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+          echo "ndk.dir=$ANDROID_NDK_HOME" >> "$CM_BUILD_DIR/local.properties"
+      
+      - name: Set up keystore properties
+        script: |
+          echo "KEYSTORE_PASS=$CM_KEYSTORE_PASSWORD" > keystore.properties
+          echo "ALIAS_NAME=$CM_KEY_ALIAS" >> keystore.properties
+          echo "ALIAS_PASS=$CM_KEY_PASSWORD" >> keystore.properties
+      
+      - name: Build Android TV release
+        script: |
+          ./gradlew assembleOtherRelease
+    
+    artifacts:
+      - app/build/outputs/apk/other/release/*.apk
+      - app/build/outputs/mapping
+
+    publishing:
+      email:
+        recipients:
+          - user@example.com
+        notify:
+          success: true
+          failure: true
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: beta
+        submit_as_draft: true 
